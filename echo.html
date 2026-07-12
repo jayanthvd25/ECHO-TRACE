@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoTrace - Search Video with Words</title>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <!-- Google Fonts - Cyberpunk Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./css/echo.css">
+
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- NAVIGATION BAR -->
+    <!-- ============================================ -->
+    
+    <header class="navbar">
+
+        <div class="container">
+
+            <div class="nav-brand">
+                <span>EchoTrace</span>
+            </div>
+
+            <nav class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#">Library</a>
+                <a href="#">History</a>
+                <a href="#">Help</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline">Sign In</button>
+                <button class="btn btn-primary">Get Started</button>
+            </div>
+
+            <!-- Mobile Hamburger Menu -->
+            <button class="hamburger" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- ============================================ -->
+    <!-- HERO SECTION -->
+    <!-- ============================================ -->
+
+    <section class="hero">
+
+        <div class="container">
+
+            <div class="hero-content">
+                
+                <span class="badge">🔎 Every Frame Has a Story</span>
+
+                <h1>
+                    Every moment leaves an echo,<br/>
+                    <span class="gradient-text">We help you trace it.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Describe what you're looking for in plain words, and EchoTrace finds the exact moments from your video library - instantly.
+                </p>
+            
+                <!-- Search Bar -->
+                <div class="search-container">
+
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder='Try: "Person wearing a Black shirt" or "Car entering a parking lot"' autocomplete="off" />
+                        <button class="btn btn-search" id="searchBtn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Example Queries -->
+                    <div class="example-queries">
+                        <span>Try:</span>
+
+                        <button class="example-chip" data-query="person wearing red shirt">
+                            <i class="fas fa-user"></i> Red shirt
+                        </button>
+
+                        <button class="example-chip" data-query="white car entering parking lot">
+                            <i class="fas fa-car"></i> White car
+                        </button>
+
+                        <button class="example-chip" data-query="dog running in park">
+                            <i class="fas fa-dog"></i> Dog running
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============================================ -->
+    <!-- UPLOAD SECTION -->
+    <!-- ============================================ -->
+
+    <section class="upload-section">
+        
+        <div class="container">
+
+            <h2 class="section-title">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Upload Your Videos
+            </h2>
+
+            <p class="section-subtitle">
+                Supported formats: MP4, AVI, MOV, MKV (Max 2GB per file)
+            </p>
+
+            <div class="upload-area" id="uploadArea">
+
+                <div class="upload-content">
+
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h3>Drag & Drop Videos Here</h3>
+                    <p>or click to browse files</p>
+
+                    <button class="btn btn-secondary">Browse Files</button>
+                    <input type="file" id="fileInput" multiple accept=".mp4,.avi,.mov,.mkv" hidden />
+
+                </div>
+
+                <div class="upload-progress" id="uploadProgress">
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%;"></div>
+                    </div>
+
+                    <p class="progress-text">Uploading: <span id="progressPercent">0</span>%</p>
+                    
+                </div>
+
+            </div>
+
+            <!-- Uploaded Videos List -->
+            <div class="uploaded-videos" id="uploadedVideos">
+                <h4><i class="fas fa-video"></i> Your Library (<span id="videoCount">0</span>)</h4>
+                <div class="video-list" id="videoList">
+                    <p class="empty-state">No videos uploaded yet. Start by uploading above!</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============================================ -->
+    <!-- RESULTS SECTION -->
+    <!-- ============================================ -->
+
+    <section class="results-section" id="resultsSection">
+
+        <div class="container">
+
+            <div class="results-header">
+
+                <div>
+                    <h2 class="section-title">
+                        <i class="fas fa-search"></i>
+                        Search Results
+                    </h2>
+                    <p class="results-count" id="resultsCount">0 matches found</p>
+                </div>
+
+                <div class="results-filters">
+
+                    <select id="sortFilter">
+                        <option value="relevance">Sort by: Relevance</option>
+                        <option value="timestamp">Sort by: Timestamp</option>
+                        <option value="date">Sort by: Upload Date</option>
+                    </select>
+
+                    <select id="confidenceFilter">
+                        <option value="0">Min Confidence: All</option>
+                        <option value="70">≥ 70%</option>
+                        <option value="80">≥ 80%</option>
+                        <option value="90">≥ 90%</option>
+                    </select>
+
+                </div>
+
+            </div>
+            
+            <!-- Results Grid -->
+            <div class="results-grid" id="resultsGrid">
+
+                <div class="result-placeholder">
+
+                    <i class="fas fa-search-plus"></i>
+
+                    <p>Search for something to see results</p>
+                    <span>Try one of the example queries above</span>
+
+                </div>
+
+            </div>
+            
+            <div class="load-more" id="loadMore" style="display: none;">
+
+                <button class="btn btn-secondary">Load More Results</button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ============================================ -->
+    <!-- VIDEO PLAYER MODAL -->
+    <!-- ============================================ -->
+
+    <div class="modal" id="videoModal">
+
+        <div class="modal-overlay"></div>
+
+        <div class="modal-content">
+
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="video-player-wrapper">
+
+                <video id="videoPlayer" controls>
+                    <source src="#" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+
+            </div>
+
+            <div class="video-info">
+                <h3 id="videoTitle">Video Preview</h3>
+
+                <p>
+                    <span class="timestamp-label">
+                        <i class="fas fa-clock"></i>
+                        Timestamp:
+                        <strong id="videoTimestamp">00:00:00</strong>
+                    </span>
+
+                    <span class="confidence-badge" id="videoConfidence">
+                        <i class="fas fa-check-circle"></i>
+                        92% Match
+                    </span>
+
+                </p>
+
+                <div class="video-actions">
+
+                    <button class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        Download Clip
+                    </button>
+
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-bookmark"></i>
+                        Save
+                    </button>
+
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-share"></i>
+                        Share
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SIDEBAR / HISTORY PANEL -->
+    <!-- ============================================ -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+
+            <h3><i class="fas fa-history"></i> History</h3>
+
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+
+        </div>
+
+        <div class="sidebar-content">
+
+            <div class="history-item">
+
+                <p class="history-query">"person wearing red shirt"</p>
+                <span class="history-time">2 min ago</span>
+                <span class="history-count">12 results</span>
+
+            </div>
+
+            <div class="history-item">
+
+                <p class="history-query">"white car entering parking lot"</p>
+                <span class="history-time">1 hour ago</span>
+                <span class="history-count">8 results</span>
+
+            </div>
+
+            <div class="history-item">
+
+                <p class="history-query">"person wearing cooling glasses"</p>
+                <span class="history-time">5 hours ago</span>
+                <span class="history-count">12 results</span>
+
+            </div>
+
+            <div class="history-item">
+
+                <p class="history-query">"person carrying a backpack"</p>
+                <span class="history-time">2 days ago</span>
+                <span class="history-count">22 results</span>
+
+            </div> 
+
+        </div>
+
+        <div class="sidebar-footer">
+
+            <button class="btn btn-outline" style="width: 100%;">
+                <i class="fas fa-trash"></i> Clear History 
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle history">
+        <i class="fas fa-history"></i>
+    </button>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+
+                    <i class="fas fa-waveform"></i>
+                    <span>EchoTrace</span>
+                    <p>Intelligent video retrieval using cutting-edge AI technology.</p>
+
+                </div>
+
+                <div class="footer-links">
+                    <h4>Product</h4>
+                    <a href="#">Features</a>
+                    <a href="#">Pricing</a>
+                    <a href="#">Documentation</a>
+                    <a href="#">Changelog</a>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <a href="#">Help Center</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Status</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+
+                <p>&copy; 2026 EchoTrace. All rights reserved.</p>
+
+                <div class="social-links">
+                    <a href="https://github.com/jayanthvd25" target="_blank" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/jayanth-vd-789912357/" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================ -->
+    <script src="./js/echo.js"></script>
+    
+</body>
+</html>
