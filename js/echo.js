@@ -1,6 +1,5 @@
 // ============================================
-// ECHOTRACE - COMPLETE JAVASCRIPT
-// Black Theme Version
+// ECHOTRACE - JAVASCRIPT
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
